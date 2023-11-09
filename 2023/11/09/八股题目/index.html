@@ -1,0 +1,1070 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/lulalula/img/fluid.png">
+  <link rel="icon" href="/lulalula/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Lpx">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring1、使用 Spring 的好处是什么？MyAnswer： 首先，Spring 是一个开源的轻量型框架，是非侵入式的，可以以很小的代价改造旧的项目。其次，Spring 的生态很好，支持的框架和组件非常丰富。再有，Spring 极大地简化了开发，不用再重复造轮子，开箱即用，拓展性很强。Spring 支持 IOC，极大的降低了耦合度，对象的生命周期和配置都由容器管理。还支持 AOP，将业务逻">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Berg">
+<meta property="og:url" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Berg">
+<meta property="og:description" content="Spring1、使用 Spring 的好处是什么？MyAnswer： 首先，Spring 是一个开源的轻量型框架，是非侵入式的，可以以很小的代价改造旧的项目。其次，Spring 的生态很好，支持的框架和组件非常丰富。再有，Spring 极大地简化了开发，不用再重复造轮子，开箱即用，拓展性很强。Spring 支持 IOC，极大的降低了耦合度，对象的生命周期和配置都由容器管理。还支持 AOP，将业务逻">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/1cc7401143e79383ead96582ac11b615.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/jvm-gc-roots.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/mark-and-sweep-garbage-collection-algorithm.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/copying-garbage-collection-algorithm.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/mark-and-compact-garbage-collection-algorithm.png">
+<meta property="article:published_time" content="2023-11-09T02:59:33.361Z">
+<meta property="article:modified_time" content="2023-07-25T13:10:23.449Z">
+<meta property="article:author" content="Lpx">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/1cc7401143e79383ead96582ac11b615.png">
+  
+  
+  
+  <title>Berg</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/lulalula/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/lulalula/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/lulalula/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yolo09110.github.io","root":"/lulalula/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"CdrmGVSpBdC5RxmCwvpa4qZB-gzGzoHsz","app_key":"7s5o0uXg54vyI98408Q967HX","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/lulalula/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/lulalula/js/utils.js" ></script>
+  <script  src="/lulalula/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/lulalula/">
+      <strong>Berg</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/lulalula/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/lulalula/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/lulalula/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/lulalula/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/lulalula/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/lulalula/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-09 10:59" pubdate>
+          2023年11月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          110 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h5 id="1、使用-Spring-的好处是什么？"><a href="#1、使用-Spring-的好处是什么？" class="headerlink" title="1、使用 Spring 的好处是什么？"></a>1、使用 Spring 的好处是什么？</h5><p>MyAnswer：</p>
+<p>首先，Spring 是一个开源的轻量型框架，是非侵入式的，可以以很小的代价改造旧的项目。其次，Spring 的生态很好，支持的框架和组件非常丰富。再有，Spring 极大地简化了开发，不用再重复造轮子，开箱即用，拓展性很强。Spring 支持 IOC，极大的降低了耦合度，对象的生命周期和配置都由容器管理。还支持 AOP，将业务逻辑和系统服务分开。Spring 还支持事务操作</p>
+<h5 id="2、什么是AOP？"><a href="#2、什么是AOP？" class="headerlink" title="2、什么是AOP？"></a>2、什么是AOP？</h5><p>AOP（Aspect-Oriented Programming，面向切面编程），是指将与业务逻辑无关，但是被业务逻辑模块共同调用的逻辑和责任进行封装，便于减少代码的重复，降低模块间耦合度。     当需要为分散的对象引入公共行为的时候，使用AOP。</p>
+<h5 id="3、AOP的代理方式有哪几种？"><a href="#3、AOP的代理方式有哪几种？" class="headerlink" title="3、AOP的代理方式有哪几种？"></a>3、AOP的代理方式有哪几种？</h5><p>当被代理对象有实现接口时，使用 JDK 动态代理。没有实现接口时，使用 Cglib 代理</p>
+<h5 id="4、怎样实现动态代理-被代理对象必须实现了某接口"><a href="#4、怎样实现动态代理-被代理对象必须实现了某接口" class="headerlink" title="4、怎样实现动态代理(被代理对象必须实现了某接口)"></a>4、怎样实现动态代理(被代理对象必须实现了某接口)</h5><p>动态代理最核心的是一个接口 （InvocationHandler）和一个方法（ newProxyInstance ）</p>
+<p>代理类首先实现该接口，表明该类是一个动态代理类，重写 invoke 方法，完成代理过程，返回被代理对象方法执行的结果。 </p>
+<p>通过 Proxy.newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler h) 得到代理对象，代理对象是被代理对象实现的接口类型</p>
+<h5 id="5、AOP的一些基本概念"><a href="#5、AOP的一些基本概念" class="headerlink" title="5、AOP的一些基本概念"></a>5、AOP的一些基本概念</h5><p>目标（Target）：被通知的对象（要增强的目标）</p>
+<p>代理（Proxy）：向目标对象通知以后创建的代理对象</p>
+<p>连接点（JointPoint）：目标对象所属类中，定义的所有方法均为连接点</p>
+<p>切入点（Pointcut）：被切面拦截 &#x2F; 增强的连接点。 切入点一定是连接点，连接点不一定是切入点</p>
+<p>通知（Advice）：增强的逻辑 &#x2F; 代码</p>
+<p>切面（Aspect）：切入点 + 通知</p>
+<p>织入（Weaving）：将通知应用到目标对象，进而生成代理对象的过程动作 </p>
+<h5 id="6、通知（Advice）的类型"><a href="#6、通知（Advice）的类型" class="headerlink" title="6、通知（Advice）的类型"></a>6、通知（Advice）的类型</h5><p>前置通知 Before 、后置通知 After 、返回后通知 After Return 、异常后通知 After Throwing、环绕通知 Around </p>
+<h5 id="7、Bean的生命周期"><a href="#7、Bean的生命周期" class="headerlink" title="7、Bean的生命周期"></a>7、Bean的生命周期</h5><ul>
+<li>实例化</li>
+<li>set 方法属性填充</li>
+<li>如果实现了 Aware 接口，调用相关方法</li>
+<li>如果有和加载这个 Bean 的容器相关的 BeanPostProcessor 接口实现类，则调用 postProcessBeforeInitialization() </li>
+<li><strong>如果实现了 InitializingBean 接口，执行 afterPropertiesSet() 方法</strong></li>
+<li>如果有自定义配置的 init-method 则调用</li>
+<li>调用 postProcessAfterInitialization() </li>
+<li>使用Bean</li>
+<li><strong>Bean销毁时，如果实现了 DisposableBean 接口，则调用 destroy() 方法</strong></li>
+<li>Bean 销毁时，如果有自定义配置的 destroy-method ，则调用</li>
+</ul>
+<h5 id="8、Bean-的作用域"><a href="#8、Bean-的作用域" class="headerlink" title="8、Bean 的作用域"></a>8、Bean 的作用域</h5><ul>
+<li>singleton：唯一的 Bean 实例，如果没有设置懒加载则在创建容器时就创建唯一的 Bean，后续操作都是统一 Bean</li>
+<li>prototype：每次从容器中获取，都会新创建一个 Bean 实例</li>
+<li>request：每次请求新建一个 Bean 实例，在本次请求中都是同一个 Bean。该作用域仅适用于使用 web 的 Spring ApplicationContext 环境</li>
+<li>session：每次会话新建一个 Bean 实例</li>
+<li>application：每个web应用拥有一个 Bean</li>
+</ul>
+<h5 id="9、Spring-中单例-Bean-的线程安全问题"><a href="#9、Spring-中单例-Bean-的线程安全问题" class="headerlink" title="9、Spring 中单例 Bean 的线程安全问题"></a>9、Spring 中单例 Bean 的线程安全问题</h5><p>单例 Bean 分为两种，一种是拥有可变<strong>成员变量</strong>的有状态 Bean，这种单例 Bean 存在线程安全问题。另一种是不拥有可变<strong>成员变量</strong>的无状态 Bean，这种单例 Bean 不存在线程安全问题。</p>
+<p>解决有状态 Bean 的线程安全问题，一是尽量避免使用可变成员变量，二是使用 ThreadLocal 对象，将可变成员变量存入其中</p>
+<h5 id="10、Spring-常见的注入方式"><a href="#10、Spring-常见的注入方式" class="headerlink" title="10、Spring 常见的注入方式"></a>10、Spring 常见的注入方式</h5><ul>
+<li>构造器依赖注入：通过容器触发一个类的构造器来实现，构造器有一系列参数，每个参数代表对其他类的依赖</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FooController</span> &#123;<br>    <br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> FooService fooService;<br> <br>  <span class="hljs-comment">//注意，不能有无参构造，如果有的话 SpringBoot 默认使用无参构造，注入为null</span><br>  <span class="hljs-meta">@Autowired</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">FooController</span><span class="hljs-params">(FooService fooService)</span> &#123;<br>      <span class="hljs-built_in">this</span>.fooService = fooService;<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>Spring 推荐使用构造器依赖注入，原因是：注入的依赖不可变（推荐使用 final 修饰成员变量）、依赖不为空（在实例化对象时，调用它的有参构造进行注入，如果依赖为 null 的话，直接报错）、避免循环依赖，如果存在循环依赖，应用启动时就报错</p>
+<ul>
+<li>setter 方法注入</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> UserService userService;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUserService</span><span class="hljs-params">(UserService userService)</span>&#123;<br>        <span class="hljs-built_in">this</span>.userService = userService;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>好处：①如果有注入参数很多时，构造器注入过于臃肿，setter 注入就比较方便</p>
+<p>②能够让类在之后重新配置或者重新注入</p>
+<ul>
+<li>属性 &#x2F; Field 注入</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> UserService userService;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>优点：简单明了、新增依赖十分方便</p>
+<p>缺点：注入为 null 时只能等到使用时报空指针异常才能发现、有可能造成循环依赖</p>
+<h5 id="11、Spring框架用到了哪几种设计模式"><a href="#11、Spring框架用到了哪几种设计模式" class="headerlink" title="11、Spring框架用到了哪几种设计模式"></a>11、Spring框架用到了哪几种设计模式</h5><ul>
+<li>工厂设计模式：Spring 使用工厂模式通过 BeanFactory 创建 Bean 对象</li>
+<li>代理设计模式：Spring AOP 的实现使用了代理模式</li>
+<li>单例设计模式：Spring 中的 Bean 默认都是单例</li>
+<li>模板方法模式：Spring 中 JdbcTemplate 等以 template 结尾的对数据库操作的类使用到了模板模式</li>
+<li>包装器设计模式：项目需要连接很多数据库，每次访问可能是不同的数据库，包装器模式使可以动态的切换不同的数据源</li>
+<li>观察者模式：Spring 事件驱动模型就是很典型的观察者模式</li>
+<li>适配器模式：Spring MVC 中用到了适配器模式进行 Controller 的适配</li>
+</ul>
+<h5 id="12、ApplicationContext-的实现类"><a href="#12、ApplicationContext-的实现类" class="headerlink" title="12、ApplicationContext 的实现类"></a>12、ApplicationContext 的实现类</h5><ul>
+<li>ClassPathXmlApplicationContext：加载类路径下的配置文件，读取其中 bean 的定义</li>
+<li>AnnotationConfigApplicationContext：读取注解信息，创建容器加载 Bean</li>
+<li>FileSystemXmlApplicationContext：加载磁盘任意路径下的配置文件</li>
+</ul>
+<h2 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h2><h5 id="1、Mysql架构"><a href="#1、Mysql架构" class="headerlink" title="1、Mysql架构"></a>1、Mysql架构</h5><p>Mysql 分为 Server 层和存储引擎层。所有跨存储引擎的功能都是在 Server 层实现的，存储引擎层负责数据的存储查询等</p>
+<ul>
+<li>Server 层：从上到下依次有 连接器（身份校验、权限查询）、查询缓存（如果是查询语句的话，Mysql8 已经删除）、分析器（语法语义分析）、优化器（执行方案的最优选择，比如选择使用什么索引）、执行器（首先进行权限校验，通过则调用存储引擎的接口，返回接口执行的结果）</li>
+<li>存储引擎层：负责数据的存储查询等，采用可插拔式设计，Mysql 默认的存储引擎为 InnoDB，常见的还有 MyISAM</li>
+</ul>
+<h5 id="2、数据库的三范式"><a href="#2、数据库的三范式" class="headerlink" title="2、数据库的三范式"></a>2、数据库的三范式</h5><ul>
+<li>第一范式：强调列的原子性，即表的每一列都是不可分割的原子数据项</li>
+<li>第二范式：要求实体的属性完全依赖于主关键字（可以是多个属性组合），完全依赖是指不能仅依赖主关键字一部分的属性</li>
+<li>第三范式：任何非主属性不依赖其他非主属性</li>
+</ul>
+<h5 id="3、char-和-varchar-的区别"><a href="#3、char-和-varchar-的区别" class="headerlink" title="3、char 和 varchar 的区别"></a>3、char 和 varchar 的区别</h5><ul>
+<li><p>char 是定长的，对于不定长的数据，char 占用空间。适合存储固定长度的数据，效率高</p>
+</li>
+<li><p>varchar 是不定长的，存储的是所有的数据 + 自身此时的长度（占一个字节）</p>
+</li>
+</ul>
+<h5 id="4、varchar-10-和-varchar-20-的区别"><a href="#4、varchar-10-和-varchar-20-的区别" class="headerlink" title="4、varchar(10) 和 varchar(20) 的区别"></a>4、varchar(10) 和 varchar(20) 的区别</h5><p>在硬盘存储上二者没有任何区别，所占的空间的都是所有数据的总字节长度 + 1，但是有些需要在内存中完成的作业就会有差别，因为在内存中是按照定义时的长度分配空间的，比如说 order by等操作</p>
+<h5 id="5、谈谈你对索引的理解"><a href="#5、谈谈你对索引的理解" class="headerlink" title="5、谈谈你对索引的理解"></a>5、谈谈你对索引的理解</h5><p>索引出现的目的就是提高数据的查询效率，相当于书的目录。索引根据不同的分类标准可以分为很多。按照数据结构可以分为 B+ 树索引、Hash 索引、Full-text 索引，按照物理存储可以分为 聚簇索引和二级索引（辅助索引），按照字段类型可以分为 主键索引、唯一索引、普通索引、前缀索引，按照字段数量可以分为 单列索引和聚合索引；</p>
+<p>索引的存在并不一定带来好处，因为它存在几个问题：</p>
+<ol>
+<li>索引需要占用物理空间</li>
+<li>创建和维护索引需要耗费时间</li>
+<li>降低了增删改的效率，因为进行增删改操作时，B+ 树为了保持索引的有序性，都要进行动态维护</li>
+</ol>
+<p>所以，索引的使用也要根据实际情况来定，不适合创建索引的字段有:</p>
+<ol>
+<li>where 、order by 、group by 中用不到的字段</li>
+<li>经常被修改的字段</li>
+<li>存在大量重复数据的字段</li>
+<li>表数据太少时不适合创建索引</li>
+</ol>
+<p>适合创建索引的情况：</p>
+<ol>
+<li>字段有唯一性限制的</li>
+<li>经常在 where、order by、group by 中出现的字段</li>
+</ol>
+<p>建立索引的原则就是：</p>
+<ol>
+<li>在最频繁使用的、用以缩小查询范围的字段上建立索引</li>
+<li>在最频繁使用的、需要排序的字段上建立索引</li>
+</ol>
+<h5 id="6、为什么InnoDB使用-B-树而不是-B-树"><a href="#6、为什么InnoDB使用-B-树而不是-B-树" class="headerlink" title="6、为什么InnoDB使用 B+ 树而不是 B 树"></a>6、为什么InnoDB使用 B+ 树而不是 B 树</h5><ol>
+<li>B+ 树只有叶子节点存放数据，非叶子节点不存放数据；而 B 树所有节点都存放数据。这样的话，B+ 树的非叶子节点可以存放更多的索引，相比于 B 树 B+ 树就更加“矮胖”，查询时磁盘 I&#x2F;O 的次数就少</li>
+<li>B+ 树的叶子节点使用双向链表相互连接，有利于范围查询；而  B 树要进行范围查询只能遍历所有的节点</li>
+<li>B+ 树有大量的冗余节点（所有非叶子节点都是冗余节点，所有节点的索引子节点都有），这些冗余让 B+ 树在删除、插入时效率更高。而 B 树在删除、插入操作时会发生复杂的树的变化</li>
+</ol>
+<h5 id="7、对聚簇索引的理解"><a href="#7、对聚簇索引的理解" class="headerlink" title="7、对聚簇索引的理解"></a>7、对聚簇索引的理解</h5><p>聚簇索引就是对磁盘上数据重新组织以按一个或多个列的值进行排序的算法。特点是存储数据的顺序和索引一致。一张表只允许且一定有一个聚簇索引。如果有主键则以其为索引键，如果没有主键则以第一个不为 null 的唯一键作为索引键，如果没有，则 InnoDB 自己生成一个隐式自增 id 作为索引键</p>
+<h5 id="8、聚簇索引和非聚簇索引的区别"><a href="#8、聚簇索引和非聚簇索引的区别" class="headerlink" title="8、聚簇索引和非聚簇索引的区别"></a>8、聚簇索引和非聚簇索引的区别</h5><p>聚簇索引的叶子节点存放数据，而非聚簇索引的叶子节点不存放数据，仍然是索引节点，存放的是聚簇索引的索引键</p>
+<h5 id="9、谈谈对-Hash-索引的理解"><a href="#9、谈谈对-Hash-索引的理解" class="headerlink" title="9、谈谈对 Hash 索引的理解"></a>9、谈谈对 Hash 索引的理解</h5><p>Hash 索引能以 O（1）的时间进行查找，但是失去了有序性。无法用于范围查找、部分查找和排序，只支持精确查找。</p>
+<p>InnoDB 对 B+ 树索引进行了优化，当某个索引值被频繁使用时，就在 B+ 树索引之上再建一个 Hash 索引，这样 B+ 索引也就具有了 Hash 索引的快速查找优点</p>
+<h5 id="10、谈谈对覆盖索引的理解"><a href="#10、谈谈对覆盖索引的理解" class="headerlink" title="10、谈谈对覆盖索引的理解"></a>10、谈谈对覆盖索引的理解</h5><p>覆盖索引就是指索要查询的字段数据在辅助索引中直接就可以查到，而不用回表操作，再去聚簇索引中查记录。</p>
+<h5 id="11、怎么直到是否使用到了索引"><a href="#11、怎么直到是否使用到了索引" class="headerlink" title="11、怎么直到是否使用到了索引"></a>11、怎么直到是否使用到了索引</h5><p>使用 explain 命令来查看执行计划，关注 possible_keys（可能用到的索引）、key（经过优化器评估最终使用的索引）、key_len（使用的索引的长度）这几个字段</p>
+<h5 id="12、索引失效的几种情况"><a href="#12、索引失效的几种情况" class="headerlink" title="12、索引失效的几种情况"></a>12、索引失效的几种情况</h5><ol>
+<li>对索引字段进行了表达式计算</li>
+<li>对索引字段使用了函数运算</li>
+<li>索引字段进行了隐式类型转换（字符串与数字比较时，默认会把字符串类型转为数字）</li>
+<li>进行左或者左右模糊查询 like “%aa”  或者 like “%aa%”</li>
+<li>where 语句里使用了 or</li>
+</ol>
+<h5 id="13、查询性能的优化"><a href="#13、查询性能的优化" class="headerlink" title="13、查询性能的优化"></a>13、查询性能的优化</h5><ol>
+<li>减少查询的数据量：只返回必要的列，避免使用 select *；  只返回必要的行，使用 limit   ；缓存重复查询的数据</li>
+<li>减少服务端扫描的行数：最有效的办法是使用索引来覆盖查询，也就是索引覆盖</li>
+</ol>
+<h5 id="14、InnoDB-和-MyISAM-的区别"><a href="#14、InnoDB-和-MyISAM-的区别" class="headerlink" title="14、InnoDB 和 MyISAM 的区别"></a>14、InnoDB 和 MyISAM 的区别</h5><ul>
+<li>InnoDB 支持事务，MyISAM 不支持事务</li>
+<li>InnoDB 支持行级锁，MyISAM 不支持行级锁，只支持表级锁</li>
+<li>InnoDB 支持数据库异常崩溃后的安全恢复，依赖于 redo log，MyISAM 不支持</li>
+<li>InnoDB 支持 MVCC，MyISAM 不支持</li>
+<li>InnoDB 支持外键，MyISAM 不支持</li>
+<li>InnoDB 的性能好于 MyISAM</li>
+</ul>
+<h5 id="15、主从复制中涉及的三个线程"><a href="#15、主从复制中涉及的三个线程" class="headerlink" title="15、主从复制中涉及的三个线程"></a>15、主从复制中涉及的三个线程</h5><ul>
+<li>binlog 线程：负责将主服务器上的数据更改写入到二进制日志（binlog）中</li>
+<li>I&#x2F;O 线程：负责从主服务器上读取二进制日志，并写入到从服务器的重放日志（relay log）中</li>
+<li>SQL 线程： 负责读取重放日志，并重放其中的 SQL 语句</li>
+</ul>
+<h5 id="16、请你描述下事务的特性"><a href="#16、请你描述下事务的特性" class="headerlink" title="16、请你描述下事务的特性"></a>16、请你描述下事务的特性</h5><ul>
+<li>原子性（atomicity）：事务中的操作要么全部执行，要么都不执行，发生错误就回滚</li>
+<li>一致性（consistency）：事务执行前后，数据满足<strong>完整性约束</strong>，数据库保持一致性状态。换种说法，事务执行后的结果要与所抽象的客观世界的真实情况保持一致。</li>
+<li>隔离性（isolation）：数据库允许多事务并发执行，在对同一数据进行操作时，多个并发事务应该互不影响，也就是事务之间是隔离的</li>
+<li>持久性（durability）：事务一旦提交，对数据库的修改就是永久的</li>
+</ul>
+<p>原子性通过 undo log（回滚日志）来实现；持久性通过 redo log（重做日志）来实现； 隔离性通过 MVCC 或锁机制来实现；一致性通过 原子性 + 持久性 + 隔离性 来实现</p>
+<h5 id="17、谈谈对-MVCC-的理解"><a href="#17、谈谈对-MVCC-的理解" class="headerlink" title="17、谈谈对 MVCC 的理解"></a>17、谈谈对 MVCC 的理解</h5><p>MVCC（多版本并发控制 multi-version concurrency control），是一种并发控制的方法，基于 隐藏字段 trx_id、roll_pointer + Read View + undo log 来实现。InnoDB 的<strong>可重复读</strong>、<strong>读已提交</strong>隔离级别都是基于 MVCC 实现的。相较于加锁的粗暴操作以及较大的性能影响，MVCC 用更好的方式去处理冲突，能有效提高数据库的并发性能</p>
+<h5 id="18、说一下-MySQL-的表锁和行锁"><a href="#18、说一下-MySQL-的表锁和行锁" class="headerlink" title="18、说一下 MySQL 的表锁和行锁"></a>18、说一下 MySQL 的表锁和行锁</h5><ul>
+<li>表级锁：MySQL 中粒度比较大的一种锁，主要有 表锁、元数据锁、意向锁、AUTO-INC锁，针对的是非索引字段。对当前操作的整张表加锁，实现简单，资源消耗少，加锁快，不会出现死锁。但是触发冲突的概率大，高并发下效率低。表级锁和存储引擎无关。 </li>
+<li>行级锁：MySQL 中粒度最小的锁，主要有 Record Lock、Gap Lock、Next-Key Lock，针对的是索引字段。对表中的行记录加锁。实现较复杂，消耗资源较多，加锁慢，会出现死锁。但是行级锁能大大降低触发冲突的概率，高并发下效率高。行级锁与存储引擎有关，InnoDB 支持行级锁，MyISAM 不支持</li>
+</ul>
+<h5 id="19、MySQL-服务器-CPU-飙升到-500-怎么处理"><a href="#19、MySQL-服务器-CPU-飙升到-500-怎么处理" class="headerlink" title="19、MySQL 服务器 CPU 飙升到 500% 怎么处理"></a>19、MySQL 服务器 CPU 飙升到 500% 怎么处理</h5><p>先使用操作系统的 top 命令查看是不是 mysqld 占用导致的，如果不是，则找出占用高的进程进行相关处理；</p>
+<p>如果是 mysqld 占用导致的，则使用 SHOW PEOCESSLIST 查看 MySQL 正在运行的线程，找出消耗高的 SQL，看看它的执行计划是否准确，索引是否失效，或者其他原因。</p>
+<p>然后 kill 掉这些线程，做出调整，比如 sql 优化、索引优化等，再重新运行。</p>
+<p>如果所有的 SQL 消耗都不高，只是同一时间有大量的 MySQL 连接导致 CPU 飙升，则分析相关原因，同时做出调整。</p>
+<h5 id="20、谈谈你对水平切分和垂直切分的理解"><a href="#20、谈谈你对水平切分和垂直切分的理解" class="headerlink" title="20、谈谈你对水平切分和垂直切分的理解"></a>20、谈谈你对水平切分和垂直切分的理解</h5><ul>
+<li>水平切分是指将同一个表中的记录拆分到多个结构相同的表中，可以将数据分布到集群的不同节点上，从而减小单个数据库的压力</li>
+<li>垂直切分是指将一个表按列切分成多个表，通常是按照列的关系密集程度进行切分，也可将经常使用和不经常使用的切分开</li>
+</ul>
+<h5 id="20、主从同步的延迟原因及解决办法"><a href="#20、主从同步的延迟原因及解决办法" class="headerlink" title="20、主从同步的延迟原因及解决办法"></a>20、主从同步的延迟原因及解决办法</h5><p>从服务器的 SQL 线程是单线程，当主库负载过高，从库读取重放日志，其中需要重放的DML、DDL 操作太多太费时，就会导致 SQL 线程处理不过来，导致延迟出现。</p>
+<p>解决办法：增加从服务器，降低服务器负载； 提升从服务器配置</p>
+<h5 id="21、对数据库读写分离的理解"><a href="#21、对数据库读写分离的理解" class="headerlink" title="21、对数据库读写分离的理解"></a>21、对数据库读写分离的理解</h5><p>读写分离常用代理方式实现，代理服务器接收应用层传来的读写请求，然后决定转发到哪个服务器。主服务器处理写操作和实时性要求比较高的读操作，从服务器处理读操作；</p>
+<p>读写分离极大的缓解了锁的争用，提升了系统性能，增加了冗余，提高了可用性</p>
+<h5 id="22、MySQL问题排查的手段"><a href="#22、MySQL问题排查的手段" class="headerlink" title="22、MySQL问题排查的手段"></a>22、MySQL问题排查的手段</h5><ul>
+<li>使用 show processlist 命令查看当前的所有连接信息</li>
+<li>使用 explain 命令查看SQL 的执行计划</li>
+<li>开启慢查询日志，查看慢查询的SQL</li>
+</ul>
+<h5 id="23、binlog、undolog、redolog都是干什么的"><a href="#23、binlog、undolog、redolog都是干什么的" class="headerlink" title="23、binlog、undolog、redolog都是干什么的"></a>23、binlog、undolog、redolog都是干什么的</h5><p>binlog：server层实现的，记录所有引擎对数据库的修改，用于事务提交时，是逻辑日志，记录语句的原始逻辑。是可以追加写入的，写到一定大小会创建一个新的文件继续写，不会覆盖。用于读写分离主从复制</p>
+<p>undolog：记录修改前记录，用于事务回滚和MVCC。</p>
+<p>redolog：是 InnoDB 存储引擎独有的，是物理日志，记录的是在具体某个数据页上做了什么修改。是循环写，写满之后会覆盖之前的。用于数据库故障之后的数据恢复。</p>
+<h5 id="24、SQL-和-MySQL-的区别"><a href="#24、SQL-和-MySQL-的区别" class="headerlink" title="24、SQL 和 MySQL 的区别"></a>24、SQL 和 MySQL 的区别</h5><p>SQL 是一种结构化查询语言，用于在数据库上执行各种操作，而MySQL 是一个软件，是一个数据库管理系统，使用 SQL 执行所有数据操作</p>
+<h5 id="25、什么是死锁？如何解决"><a href="#25、什么是死锁？如何解决" class="headerlink" title="25、什么是死锁？如何解决"></a>25、什么是死锁？如何解决</h5><p>死锁是指两个或多个事务在同一资源上相互占用，并请求锁定对方的资源，从而导致恶性循环的现象。</p>
+<p>官方解答：两个事务都持有对方需要的锁，并且都在等待对方释放锁，自己不会释放锁</p>
+<p>常见的解决死锁的方法：</p>
+<ul>
+<li>设置事务等待锁的超时时间，超过这个时间就回滚，手中的锁就会释放</li>
+<li>开启死锁主动检测，在发现死锁发生时，手动回滚死锁链条中的一个事务</li>
+</ul>
+<h5 id="26、什么是悲观锁和乐观锁？如何实现"><a href="#26、什么是悲观锁和乐观锁？如何实现" class="headerlink" title="26、什么是悲观锁和乐观锁？如何实现"></a>26、什么是悲观锁和乐观锁？如何实现</h5><ul>
+<li>悲观锁：假定一定会发生冲突，屏蔽一切可能违反数据完整性的操作。实现方式：在数据库中使用锁机制</li>
+<li>乐观锁：假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性。适用于读多写少的场景。实现方式：版本号机制 或 CAS 算法</li>
+</ul>
+<h5 id="27、DROP、DELETE、TRUNCATE"><a href="#27、DROP、DELETE、TRUNCATE" class="headerlink" title="27、DROP、DELETE、TRUNCATE"></a>27、DROP、DELETE、TRUNCATE</h5><p>drop属于 DDL，用来删除表结构，不可回滚。删除速度最快。</p>
+<p>delete属于DML，用来删除表中的记录，表的结构不变。可回滚，速度慢。需要逐行删除</p>
+<p>truncate 属于DDL，不删除表结构，清空表中的所有数据，不可回滚，删除速度快</p>
+<h5 id="28、为什么要分库分表"><a href="#28、为什么要分库分表" class="headerlink" title="28、为什么要分库分表"></a>28、为什么要分库分表</h5><p>随着时间和业务的发展，库中的表会越来越多，表中的数据也会越来越多。相关的数据库操作开销也会越来越大，同时，一台服务器的资源是有限的。所以从 性能和可用性角度考虑，进行数据库拆分有助于提升系统性能。拆分分为分库和分表，分库是将原本一个数据库中的表拆分到不同的数据库中。分表是指将一张表拆分成多张表。</p>
+<h5 id="29、分库分表的问题"><a href="#29、分库分表的问题" class="headerlink" title="29、分库分表的问题"></a>29、分库分表的问题</h5><ul>
+<li>事务问题：同一个数据库的表分在了不同的数据库上，如果单个操作涉及到多个数据库，自带的事务就没办法使用。</li>
+<li>join操作：同一个数据库的表分在了不同的数据库上，join 操作就没法使用。只能手动多次查询进行封装</li>
+<li>自增的主键id：分库分表后，数据遍布在不同的数据库上，自增主键就没法满足生成主键唯一的要求。需要使用分布式id</li>
+</ul>
+<h5 id="30、读写分离的实现方案"><a href="#30、读写分离的实现方案" class="headerlink" title="30、读写分离的实现方案"></a>30、读写分离的实现方案</h5><p>推荐 sharding-jdbc</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><h5 id="1、谈下你对redis的了解"><a href="#1、谈下你对redis的了解" class="headerlink" title="1、谈下你对redis的了解"></a>1、谈下你对redis的了解</h5><p>redis 是一种非关系型数据库，是基于内存的键值对数据库，对数据的操作都是在内存中完成，因此读写速度非常快。常用于缓存、消息队列、分布式锁等场景。提供了多种数据类型，比如 String、set、zset、hash、list、Bitmaps（位图）、HyperLogLog（基数统计）、GEO（地理信息）、Stream（流）。Redis 还支持事务、持久化、多种集群方案、Lua脚本、发布&#x2F;订阅模式、内存淘汰机制、过期删除机制等等</p>
+<h5 id="2、Redis的使用场景"><a href="#2、Redis的使用场景" class="headerlink" title="2、Redis的使用场景"></a>2、Redis的使用场景</h5><ul>
+<li>String：缓存对象、分布式下共享session、分布式锁、常规计数</li>
+<li>Set：聚合计算（并集、差集、交集）场景，比如点赞、共同关注、抽奖活动等</li>
+<li>List：消息队列</li>
+<li>Hash：购物车、缓存对象（一般使用String缓存，Hash比较少用）</li>
+<li>ZSet：排序场景，比如排行榜</li>
+<li>Bitmap：签到统计、判断用户登陆状态</li>
+<li>GEO：滴滴叫车</li>
+<li>Stream：消息队列</li>
+</ul>
+<h5 id="3、Redis的常见功能"><a href="#3、Redis的常见功能" class="headerlink" title="3、Redis的常见功能"></a>3、Redis的常见功能</h5><p>数据持久化、分布式锁的实现、数据缓存、支持事务、支持消息队列</p>
+<h5 id="4、Redis为什么快？为什么单线程还快？"><a href="#4、Redis为什么快？为什么单线程还快？" class="headerlink" title="4、Redis为什么快？为什么单线程还快？"></a>4、Redis为什么快？为什么单线程还快？</h5><ul>
+<li>基于内存，对数据的操作都在内存中，速度快。性能瓶颈不在CPU，而在内存和网络I&#x2F;O，因此单线程不影响性能</li>
+<li>数据结构简单，对数据的操作也简单</li>
+<li>采用单线程，避免了线程切换的开销，避免了线程竞争产生的消耗</li>
+<li>使用多路I&#x2F;O复用，而不是阻塞IO</li>
+</ul>
+<h5 id="5、缓存雪崩、缓存穿透、缓存击穿以及解决方案"><a href="#5、缓存雪崩、缓存穿透、缓存击穿以及解决方案" class="headerlink" title="5、缓存雪崩、缓存穿透、缓存击穿以及解决方案"></a>5、缓存雪崩、缓存穿透、缓存击穿以及解决方案</h5><p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/redis/base/redis_interview.html#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F">缓存问题</a></p>
+<ul>
+<li>缓存雪崩：大量缓存在同一时间过期，此时有大量的用户请求，在Redis中都无法命中，于是直接请求数据库，从而导致数据库压力骤增。</li>
+</ul>
+<p>解决方案：将缓存失效时间随机打散、设置缓存不过期</p>
+<ul>
+<li>缓存击穿：缓存中的某个热点数据过期了，此时有大量请求访问该热点数据，Redis中无法命中，于是直接请求数据库，导致数据库压力骤增。</li>
+</ul>
+<p>解决方案：互斥锁方案（保证同一时间只有一个业务线程请求缓存）、不给热点数据设置过期时间</p>
+<ul>
+<li>缓存穿透：当发生缓存雪崩和缓存击穿时，一旦缓存恢复相应的数据，数据库压力就可减小，而缓存穿透不同。当大量的请求访问缓存和数据库中都没有的数据时，数据库压力骤增。</li>
+</ul>
+<p>缓存穿透一般是由于误操作（误删除了数据）或者黑客恶意攻击造成的</p>
+<p>解决方案：限制非法请求、设置空值或者默认值（当发现有缓存穿透发生时，针对查询的数据设置空值或默认值）、使用布隆过滤器</p>
+<h5 id="6、怎么保证缓存和数据库的数据的一致性"><a href="#6、怎么保证缓存和数据库的数据的一致性" class="headerlink" title="6、怎么保证缓存和数据库的数据的一致性"></a>6、怎么保证缓存和数据库的数据的一致性</h5><ul>
+<li>设置合理的缓存过期时间，过期后就会请求数据库获取数据</li>
+<li>当数据库发生修改时，更新或删除缓存</li>
+</ul>
+<p>就出现了四种方案：</p>
+<p>先更新数据库，再更新缓存    ；先更新缓存，再更新数据库；   先删除缓存，再更新数据库；   先更新数据库，再删除缓存</p>
+<p><strong>一般选用先更新数据库再删除缓存。这种叫做Cache Aside（旁路缓存）策略，是Redis 和 MySQL 的更新策略</strong></p>
+<img src="%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/1cc7401143e79383ead96582ac11b615.png" srcset="/lulalula/img/loading.gif" lazyload alt="图片" style="zoom: 50%;" />
+
+<p>可能出现的问题如上，但是，缓存的写入是远远快于数据库写入的，所以上述情况出现的可能性很小。</p>
+<h5 id="7、Redis-的持久化有几种方式"><a href="#7、Redis-的持久化有几种方式" class="headerlink" title="7、Redis 的持久化有几种方式"></a>7、Redis 的持久化有几种方式</h5><ul>
+<li>AOF（Append-only file）：Redis会将收到的每一个写命令都通过 write 函数追加到文件末尾。当Redis重启时，会读取文件，重新执行其中的命令在内存中重建整个数据库的内容。</li>
+<li>RDB（Redis Database）：按照一定的时间周期策略把内存中的数据以快照（snapshot）的形式保存到硬盘的二进制文件中。</li>
+<li>混合持久化：AOF文件前半部分为RDB格式的全量数据，后半部分为AOF格式的增量数据</li>
+</ul>
+<p>AOF和RDB区别：</p>
+<ul>
+<li>AOF比RDB 更新频率高，优先使用AOF</li>
+<li>AOF比RDB更安全，文件也更大，恢复时资源消耗更大，更耗时</li>
+<li>如果两个都配置了则优先加载AOF</li>
+</ul>
+<h5 id="8、Redis的内存淘汰策略有哪些"><a href="#8、Redis的内存淘汰策略有哪些" class="headerlink" title="8、Redis的内存淘汰策略有哪些"></a>8、Redis的内存淘汰策略有哪些</h5><ul>
+<li>不进行数据淘汰的策略：当运行内存大于最大设置值时，暂停服务，直接返回错误</li>
+<li>进行数据淘汰的策略（可分为在 设置了过期时间的数据之间淘汰 和 在所有数据之中淘汰）：<strong>volatile-random</strong>：随机淘汰设置了过期时间的任意键值；    <strong>volatile-ttl</strong>：优先淘汰更早过期的键值。    <strong>volatile-lru</strong>（Redis3.0 之前，默认的内存淘汰策略）：淘汰所有设置了过期时间的键值中，最久未使用的键值；     <strong>volatile-lfu</strong>（Redis 4.0 后新增的内存淘汰策略）：淘汰所有设置了过期时间的键值中，最少使用的键值；                                                                                                 在所有数据范围内进行淘汰：      <strong>allkeys-random</strong>：随机淘汰任意键值;      <strong>allkeys-lru</strong>：淘汰整个键值中最久未使用的键值；      <strong>allkeys-lfu</strong>（Redis 4.0 后新增的内存淘汰策略）：淘汰整个键值中最少使用的键值。</li>
+</ul>
+<h5 id="9、Redis过期键的清除"><a href="#9、Redis过期键的清除" class="headerlink" title="9、Redis过期键的清除"></a>9、Redis过期键的清除</h5><p>过期策略主要有三个：</p>
+<ul>
+<li>定时过期：每个设置过期时间的key都需要创建一个定时器，到过期时间就立即清除。 优点是清除及时，对内存友好；缺点是会占用大量的CPU资源去处理过期的数据</li>
+<li>惰性过期：只有在访问一个key时，才会判断该 key 是否过期，过期则清除。优点是可以最大化的节省CPU资源；缺点是对内存非常不优化，很久都不访问的过期数据可能一直无法清除</li>
+<li>定期清除：每隔一定的时间，会扫面一定数量的key，并清除其中的过期的key。如果过期的key占比超过一定比例，则继续扫描一定数量的key，直到过期的key占比不超过设定比例或者扫描时间达到了设定上限，则停止清除。</li>
+</ul>
+<h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h5 id="1、OSI-的七层模型分别是什么？各自的功能是什么？"><a href="#1、OSI-的七层模型分别是什么？各自的功能是什么？" class="headerlink" title="1、OSI 的七层模型分别是什么？各自的功能是什么？"></a>1、OSI 的七层模型分别是什么？各自的功能是什么？</h5><p>七层分别是：</p>
+<ul>
+<li>应用层：各种应用软件，包含 Web 应用。<strong>协议有HTTP、FTP、SMTP、DNS等</strong></li>
+<li>表现层：数据处理（编解码、加密解密、压缩解压缩）</li>
+<li>会话层：控制应用程序之间的会话能力。<strong>有安全性协议 SSL（安全套接字层协议）、TLS（安全传输层协议）</strong></li>
+<li>传输层：为两台主机进程之间的通信提供通用的数据传输服务。<strong>协议有 TCP、UDP</strong>。数据为段 segment</li>
+<li>网络层：路由和寻址。如不同设备的数据转发。<strong>协议有ICMP、IGMP、IP</strong>。此时的数据是包 packages</li>
+<li>数据链路层：帧编码和误差纠正控制。定义数据的基本格式，如何传输，如何标识。如网卡 MAC 地址。<strong>协议有ARP（地址解析协议）</strong>。此时的数据是帧 frames</li>
+<li>物理层：底层的数据传输，透明的传输比特流。解决两个硬件之间怎么通信的问题，如网线、网卡等。此时的数据是比特流 bits</li>
+</ul>
+<h5 id="2、"><a href="#2、" class="headerlink" title="2、"></a>2、</h5><h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h5 id="1、介绍下Java内存区域"><a href="#1、介绍下Java内存区域" class="headerlink" title="1、介绍下Java内存区域"></a>1、介绍下Java内存区域</h5><p>JDK 1.7之前：</p>
+<p>线程共享的是堆和方法区，堆中有字符串常量池，方法区中是运行时常量池。线程私有的是 本地方法栈、虚拟机栈、程序计数器PC</p>
+<p>JDK1.8 及以后：</p>
+<p>没有了方法区，本地内存中添加了元空间，运行常量池放在其中</p>
+<ul>
+<li>堆：是所有线程共享的一块区域，是Java虚拟机管理的最大的一块空间。堆存在的唯一目的就是存放对象实例，几乎所有的对象实例和数组都在堆上分配内存。但JDK 1.7 开始，有了逃逸分析，如果某些方法的对象引用没有被返回或者未在外面使用，也可以分配在栈上。   堆也是垃圾收集管理的主要区域，因此也被称为 GC 堆。</li>
+<li>方法区：当虚拟机需要使用一个类时，需要读取并解析Class 文件获取相关信息，再将信息存入方法区。方法区会存放已被虚拟机加载的类信息、字段信息、方法信息 等</li>
+<li>虚拟机栈：除了一些本地方法外，其他所有的Java方法调用都是通过虚拟机栈实现的。每一个方法的调用都会有一个对应的栈帧压入栈中，每一个方法结束后都会弹出对应的栈帧。栈帧由 局部变量表、操作数栈、动态链接、方法返回地址构成。</li>
+<li>本地方法栈：本地方法的调用通过本地方法栈实现，也是栈帧的压栈和弹出。栈帧由 操作数栈、局部变量表、动态链接、出口信息构成</li>
+<li>程序计数器PC：是一块比较小的内存区域，可以看作当前线程所执行的字节码的行号指示器。有两个主要作用，一是字节码解释器通过改变PC的值来依次读取指令；二是多线程时，用来记录当前线程执行的位置，在线程切换回来时直到从哪继续执行。</li>
+</ul>
+<h5 id="2、对象创建的过程"><a href="#2、对象创建的过程" class="headerlink" title="2、对象创建的过程"></a>2、对象创建的过程</h5><ul>
+<li>类加载检查：虚拟机在遇到一条 new 指令时，会先看能不能在常量池中找到需要 new 的类的符号引用，并且检查这个类是否已经被加载过、解析和初始化过。如果没有，则执行类加载过程</li>
+<li>分配内存：在类加载检查通过后，就为对象在堆上分配内存，所需的大小在加载时就已经确定。分配内存有两种，一种是 指针碰撞（针对堆内存区域规整，用过的内存在一边，没用过的在另一边，由一个指针分隔），另一种是空闲列表（针对堆内存不规整，在分配时找一块足够大的内存块分配给对象实例，空闲不空闲由一个表来记录）</li>
+<li>初始化零值：内存分配完成后，虚拟机需要将分配到的内存空间都初设为零值。这样对象的实例字段在不赋初始化值时也能使用</li>
+<li>设置对象头：初始化零值后，虚拟机需要对对象进行必要的设置，将一些信息存放到对象头中，例如这个对象是哪个类的实例、对象的哈希码等</li>
+<li>执行init方法：在虚拟机角度看上述其实已经创建好了一个对象实例，这部是按照程序员的想法对对象进行初始化</li>
+</ul>
+<h5 id="3、对象的访问定位的两种方式"><a href="#3、对象的访问定位的两种方式" class="headerlink" title="3、对象的访问定位的两种方式"></a>3、对象的访问定位的两种方式</h5><ul>
+<li>句柄：引用指向对象的句柄地址，在堆中开辟一块区域叫做句柄池，其中存放对象实例的地址和对象类型数据的地址</li>
+<li>直接指针：引用直接是对象实例的地址</li>
+</ul>
+<p>使用句柄来访问的最大好处是 reference 中存储的是稳定的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而 reference 本身不需要修改。使用直接指针访问方式最大的好处就是速度快，它节省了一次指针定位的时间开销。</p>
+<h5 id="4、如何判断对象死亡（不能再被任何途径使用的对象）"><a href="#4、如何判断对象死亡（不能再被任何途径使用的对象）" class="headerlink" title="4、如何判断对象死亡（不能再被任何途径使用的对象）"></a>4、如何判断对象死亡（不能再被任何途径使用的对象）</h5><ul>
+<li>引用计数法：每个对象添加一个引用计数器，有一个地方引用计数器就加一，当为0时代表没有引用，则证明死亡。这种方法实现简单，效率高，但是使用的不多。原因是如果对象之间循环引用，则无法回收</li>
+<li>可达性分析算法：基本思想是通过一系列的称为 GC Roots 的对象作为起点，从这些节点往下开始搜索，所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连时，就判定它死亡。需要被回收。</li>
+</ul>
+<img src="%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/jvm-gc-roots.png" srcset="/lulalula/img/loading.gif" lazyload alt="可达性分析算法" style="zoom:50%;" />
+
+<p>这种 6-10都要被回收</p>
+<p>GC Roots如何选？</p>
+<ul>
+<li>虚拟机栈或本地方法栈中引用的对象</li>
+<li>方法区中类静态属性或常量引用的对象</li>
+<li>所有被同步锁持有的对象</li>
+</ul>
+<h5 id="5、引用的类型"><a href="#5、引用的类型" class="headerlink" title="5、引用的类型"></a>5、引用的类型</h5><ul>
+<li>强引用：当内存空间不足时，虚拟机宁愿抛出 OutOfMemory 也不随意回收具有强引用的对象</li>
+<li>软引用：如果内存足够，就不会回收，如果内存不够才回收</li>
+<li>弱引用：扫描到就回收</li>
+<li>虚引用：扫描到就回收，并不会决定对象的生命周期。虚引用主要用来跟踪对象被垃圾回收的活动</li>
+</ul>
+<h5 id="6、判断一个类是无用类"><a href="#6、判断一个类是无用类" class="headerlink" title="6、判断一个类是无用类"></a>6、判断一个类是无用类</h5><ul>
+<li>该类的所有实例都被回收了，也就是说Java堆中不存在该类的实例</li>
+<li>加载该类的类加载器 ClassLoader 被回收了</li>
+<li>该类对应的 Class 对象没有在任何地方被引用</li>
+</ul>
+<h5 id="7、垃圾收集算法"><a href="#7、垃圾收集算法" class="headerlink" title="7、垃圾收集算法"></a>7、垃圾收集算法</h5><ul>
+<li>标记清除算法：最基础的收集算法，先标记出所有不需要被回收的对象，标记完成后统一回收没被标记的对象。   <strong>存在的问题</strong>：标记和清除两个操作效率都很低、清除后会产生大量不连续的内存碎片</li>
+</ul>
+<img src="%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/mark-and-sweep-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-清除算法" style="zoom: 67%;" />
+
+<ul>
+<li>复制算法：将内存分为大小相同的两块，每次使用其中一块。当这一块使用完了之后，将其中存活的对象复制到另一边，赋值完成后对这一块进行全部清除。    <strong>存在的问题</strong>：可用内存只有一半、对于大对象，复制开销比较大</li>
+</ul>
+<img src="%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/copying-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="复制算法" style="zoom: 67%;" />
+
+<ul>
+<li>标记-整理算法：标记过程一样，但是不是标记完就清除，而是先将所有的存活对象移到同一端，然后直接清除掉存活对象边界以外的所有区域      <strong>存在的问题：</strong>效率仍比较低，适合老年代这种回收频率低的场景</li>
+</ul>
+<img src="%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE.assets/mark-and-compact-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-整理算法" style="zoom:67%;" />
+
+<ul>
+<li>分代收集算法：根据对象存活周期的不同将内存分为几块。一般将堆分为新生代和老年代，然后根据不同的年代特点选择合适的垃圾收集算法。  比如新生代每次收集都有大量对象死去，那么就采用 标记-复制算法，这样每次只需要复制很少数量的对象，成本比较低。而对于老年代这种存活几率比较高同时回收频率低的，就采用 标记-清除算法或者标记-整理算法。</li>
+</ul>
+<p><em><strong>像 为什么堆要分代 这种问题，就可以从这个方面回答</strong></em></p>
+<h5 id="8、垃圾收集器"><a href="#8、垃圾收集器" class="headerlink" title="8、垃圾收集器"></a>8、垃圾收集器</h5><p>（1）CMS（Concurrent Mark Sweep）：</p>
+<p>使用标记-清除算法，分为四个步骤：</p>
+<ul>
+<li>初始标记：暂停其他所有线程，标记所有与 GC Roots 直接相连的对象，速度很快</li>
+<li>并发标记：同时开启GC 和用户线程，用一个闭包结构去记录可达对象，但是由于用户线程还在不断更新引用，所以并不能保证实时性</li>
+<li>重新标记：暂停其他所有线程。修正并发标记期间用户线程更新的引用，比初始标记时间稍长，但远远短于并发标记</li>
+<li>并发清楚：同时开启用户线程和 GC 线程，对未标记区域进行清除</li>
+</ul>
+<p>优点：并发收集、低停顿          缺点：对CPU资源敏感、无法处理浮动垃圾、会产生大量空间碎片（因为使用的是标记清除）</p>
+<p>（2）G1 （Garbage First）收集器</p>
+<p>一款面向服务器的垃圾收集器，从整体上看基于标记整理，从局部看基于标记复制。可预测停顿的时间。</p>
+<p>分为四个步骤：初始标记、并发标记、最终标记、筛选回收</p>
+<p>G1 收集器在后台维护了一个优先列表，每次根据允许的收集时间，优先选择回收价值最大的区域（名字的由来）。</p>
+<h5 id="9、类的加载过程"><a href="#9、类的加载过程" class="headerlink" title="9、类的加载过程"></a>9、类的加载过程</h5><p>加载 		 -&gt;		连接&#x2F;链接（包括 验证、准备和解析）		-&gt; 		初始化 		 -&gt; 		使用		  -&gt;   	卸载</p>
+<h5 id="10、"><a href="#10、" class="headerlink" title="10、"></a>10、</h5>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://yolo09110.github.io/lulalula/2023/11/09/八股题目/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lpx</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"CdrmGVSpBdC5RxmCwvpa4qZB-gzGzoHsz","appKey":"7s5o0uXg54vyI98408Q967HX","path":"window.location.pathname","placeholder":"说点啥子~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问次数 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访问人数 
+        <span id="leancloud-site-uv"></span>
+         次
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/lulalula/js/events.js" ></script>
+<script  src="/lulalula/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/lulalula/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/lulalula/js/leancloud.js" ></script>
+
+  <script  src="/lulalula/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/lulalula/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
