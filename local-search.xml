@@ -4,11 +4,24 @@
   
   
   <entry>
+    <title>文章</title>
+    <link href="/lulalula/2023/11/09/%E6%96%87%E7%AB%A0/"/>
+    <url>/lulalula/2023/11/09/%E6%96%87%E7%AB%A0/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title></title>
     <link href="/lulalula/2023/11/09/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/"/>
     <url>/lulalula/2023/11/09/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
     
-    <content type="html"><![CDATA[<ul><li>Java动态代理分为 JDK代理（接口）和Cglib代理（子类继承）。JDK动态代理时，代理对象执行方法时，一定要经过 InvocationHandler类的 invoke 方法</li></ul>]]></content>
+    <content type="html"><![CDATA[<ul><li>Java动态代理分为 JDK代理（接口）和Cglib代理（子类继承）。JDK动态代理时，代理对象执行方法时，一定要经过 InvocationHandler类的 invoke 方法</li></ul><p><img src="/lulalula/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/image-20231109115812960.png" alt="image-20231109115812960"></p>]]></content>
     
     
     
@@ -60,7 +73,7 @@
     <link href="/lulalula/2023/11/08/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
     <url>/lulalula/2023/11/08/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
     
-    <content type="html"><![CDATA[<p>这是一篇测试文章</p><img src="/lulalula/2023/11/08/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/climb.jpg" class="">]]></content>
+    <content type="html"><![CDATA[<p>这是一篇测试文章</p><p><img src="/lulalula/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/image-20231109115759797.png" alt="image-20231109115759797"></p>]]></content>
     
     
     <categories>
