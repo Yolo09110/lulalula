@@ -19,54 +19,54 @@
     <meta name="description" content="[TOC] 字符集JavaSE一、Java基础-上1、基础概念与常识Java语言的特点简单易学、面向对象、平台无关性、支持多线程、编译与解释并存、可靠性、安全性、支持网络编程 注：平台无关性目前已经不是Java最大的优势了，因为docker等技术也可以容易的实现跨平台 JVMJava虚拟机是运行Java字节码的虚拟机。因为有了字节码和虚拟机，才有了一次编译随处运行。 JDK和JREJDK（Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Yolo">
-<meta property="og:url" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:url" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Yolo">
 <meta property="og:description" content="[TOC] 字符集JavaSE一、Java基础-上1、基础概念与常识Java语言的特点简单易学、面向对象、平台无关性、支持多线程、编译与解释并存、可靠性、安全性、支持网络编程 注：平台无关性目前已经不是Java最大的优势了，因为docker等技术也可以容易的实现跨平台 JVMJava虚拟机是运行Java字节码的虚拟机。因为有了字节码和虚拟机，才有了一次编译随处运行。 JDK和JREJDK（Java">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk-include-jre.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-code-to-machine-code.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-code-to-machine-code-with-jit.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk-include-jre.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-code-to-machine-code.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-code-to-machine-code-with-jit.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk-jre-jvm-jit.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/compiled-and-interpreted-languages.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/compiled-and-interpreted-languages.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/shallow&deep-copy.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230515150901846.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20220422161320823.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/u=2116635709,3666027563&fm=253&fmt=auto&app=138&f=JPEG.jpeg">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/07a5bac4ce1743bcb6f856c903eb20b4.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/8e7ba3fe541d4970a5221097edaed7a0.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/types-of-exceptions-in-java.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20220422161320823.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/u=2116635709,3666027563&fm=253&fmt=auto&app=138&f=JPEG.jpeg">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/07a5bac4ce1743bcb6f856c903eb20b4.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/8e7ba3fe541d4970a5221097edaed7a0.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/types-of-exceptions-in-java.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/checked-exception.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/20170513133210763.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-collection-hierarchy.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523092849060.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523093107089.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/20170513133210763.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java-collection-hierarchy.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523092849060.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523093107089.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/blocking-queue.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk1.7_hashmap.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523154053230.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/treemap_hierarchy.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java7_concurrenthashmap.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java8_concurrenthashmap.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/640.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jmm.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jmm2.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/60afdc9c9a594f079727ec64a2e698a3tplv-k3u1fbpfcp-zoom-1.image">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/13526879-3037b144ed09eb88.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk1.7_hashmap.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230523154053230.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/treemap_hierarchy.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java7_concurrenthashmap.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/java8_concurrenthashmap.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/640.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jmm.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jmm2.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/60afdc9c9a594f079727ec64a2e698a3tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/13526879-3037b144ed09eb88.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/COMPACT.drawio.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/readview%E7%BB%93%E6%9E%84.drawio.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230720104114543.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230720104153167.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102519947.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102832977.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102945652.png">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714103606917.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/readview%E7%BB%93%E6%9E%84.drawio.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230720104114543.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230720104153167.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102519947.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102832977.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714102945652.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/image-20230714103606917.png">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/b5d264565657a5395c2781081a7483e1.jpg">
 <meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/v2-d78848d4c07fd077da0c896087e90885_1440w.webp">
-<meta property="og:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/v2-91760e98daa2e93b0d63e123657e5bb7_1440w.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/v2-91760e98daa2e93b0d63e123657e5bb7_1440w.webp">
 <meta property="article:published_time" content="2023-11-09T02:59:33.357Z">
 <meta property="article:modified_time" content="2023-10-18T13:39:53.252Z">
 <meta property="article:author" content="Lpx">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/11/09/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk-include-jre.png">
+<meta name="twitter:image" content="http://example.com/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0.assets/jdk-include-jre.png">
   
   
   
@@ -1699,7 +1699,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div></div>
-      <div>http://example.com/2023/11/09/八股笔记/</div>
+      <div>http://example.com/八股笔记/</div>
     </div>
     <div class="license-meta">
       
@@ -1743,7 +1743,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/" title="">
+                      <a href="/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/" title="">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
@@ -1753,7 +1753,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/11/08/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="测试文章">
+                      <a href="/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="测试文章">
                         <span class="hidden-mobile">测试文章</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
