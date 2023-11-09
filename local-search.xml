@@ -21,7 +21,7 @@
     <link href="/lulalula/2023/11/09/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/"/>
     <url>/lulalula/2023/11/09/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
     
-    <content type="html"><![CDATA[<ul><li>Java动态代理分为 JDK代理（接口）和Cglib代理（子类继承）。JDK动态代理时，代理对象执行方法时，一定要经过 InvocationHandler类的 invoke 方法</li></ul><p><img src="/lulalula/%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9/image-20231109115812960.png" alt="image-20231109115812960"></p>]]></content>
+    <content type="html"><![CDATA[<ul><li>Java动态代理分为 JDK代理（接口）和Cglib代理（子类继承）。JDK动态代理时，代理对象执行方法时，一定要经过 InvocationHandler类的 invoke 方法</li></ul><p><img src="http://yolo-img.oss-cn-beijing.aliyuncs.com/img/image-20231109170601601.png" alt="image-20231109170601601"></p>]]></content>
     
     
     
