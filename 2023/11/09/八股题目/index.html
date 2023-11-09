@@ -23,16 +23,16 @@
 <meta property="og:site_name" content="Yolo">
 <meta property="og:description" content="Spring1、使用 Spring 的好处是什么？MyAnswer： 首先，Spring 是一个开源的轻量型框架，是非侵入式的，可以以很小的代价改造旧的项目。其次，Spring 的生态很好，支持的框架和组件非常丰富。再有，Spring 极大地简化了开发，不用再重复造轮子，开箱即用，拓展性很强。Spring 支持 IOC，极大的降低了耦合度，对象的生命周期和配置都由容器管理。还支持 AOP，将业务逻">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/.io//1cc7401143e79383ead96582ac11b615.png">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/.io//jvm-gc-roots.png">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/.io//mark-and-sweep-garbage-collection-algorithm.png">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/.io//copying-garbage-collection-algorithm.png">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/.io//mark-and-compact-garbage-collection-algorithm.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/1cc7401143e79383ead96582ac11b615.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/jvm-gc-roots.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/mark-and-sweep-garbage-collection-algorithm.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/copying-garbage-collection-algorithm.png">
+<meta property="og:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/mark-and-compact-garbage-collection-algorithm.png">
 <meta property="article:published_time" content="2023-11-09T02:59:33.361Z">
 <meta property="article:modified_time" content="2023-07-25T13:10:23.449Z">
 <meta property="article:author" content="Lpx">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://yolo09110.github.io/lulalula/.io//1cc7401143e79383ead96582ac11b615.png">
+<meta name="twitter:image" content="https://yolo09110.github.io/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/1cc7401143e79383ead96582ac11b615.png">
   
   
   
@@ -554,7 +554,7 @@
 <p>就出现了四种方案：</p>
 <p>先更新数据库，再更新缓存    ；先更新缓存，再更新数据库；   先删除缓存，再更新数据库；   先更新数据库，再删除缓存</p>
 <p><strong>一般选用先更新数据库再删除缓存。这种叫做Cache Aside（旁路缓存）策略，是Redis 和 MySQL 的更新策略</strong></p>
-<img src="/lulalula/.io//1cc7401143e79383ead96582ac11b615.png" srcset="/lulalula/img/loading.gif" lazyload alt="图片" style="zoom: 50%;">
+<img src="/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/1cc7401143e79383ead96582ac11b615.png" srcset="/lulalula/img/loading.gif" lazyload alt="图片" style="zoom: 50%;">
 
 <p>可能出现的问题如上，但是，缓存的写入是远远快于数据库写入的，所以上述情况出现的可能性很小。</p>
 <h5 id="7、Redis-的持久化有几种方式"><a href="#7、Redis-的持久化有几种方式" class="headerlink" title="7、Redis 的持久化有几种方式"></a>7、Redis 的持久化有几种方式</h5><ul>
@@ -615,7 +615,7 @@
 <li>引用计数法：每个对象添加一个引用计数器，有一个地方引用计数器就加一，当为0时代表没有引用，则证明死亡。这种方法实现简单，效率高，但是使用的不多。原因是如果对象之间循环引用，则无法回收</li>
 <li>可达性分析算法：基本思想是通过一系列的称为 GC Roots 的对象作为起点，从这些节点往下开始搜索，所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连时，就判定它死亡。需要被回收。</li>
 </ul>
-<img src="/lulalula/.io//jvm-gc-roots.png" srcset="/lulalula/img/loading.gif" lazyload alt="可达性分析算法" style="zoom:50%;">
+<img src="/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/jvm-gc-roots.png" srcset="/lulalula/img/loading.gif" lazyload alt="可达性分析算法" style="zoom:50%;">
 
 <p>这种 6-10都要被回收</p>
 <p>GC Roots如何选？</p>
@@ -638,17 +638,17 @@
 <h5 id="7、垃圾收集算法"><a href="#7、垃圾收集算法" class="headerlink" title="7、垃圾收集算法"></a>7、垃圾收集算法</h5><ul>
 <li>标记清除算法：最基础的收集算法，先标记出所有不需要被回收的对象，标记完成后统一回收没被标记的对象。   <strong>存在的问题</strong>：标记和清除两个操作效率都很低、清除后会产生大量不连续的内存碎片</li>
 </ul>
-<img src="/lulalula/.io//mark-and-sweep-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-清除算法" style="zoom: 67%;">
+<img src="/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/mark-and-sweep-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-清除算法" style="zoom: 67%;">
 
 <ul>
 <li>复制算法：将内存分为大小相同的两块，每次使用其中一块。当这一块使用完了之后，将其中存活的对象复制到另一边，赋值完成后对这一块进行全部清除。    <strong>存在的问题</strong>：可用内存只有一半、对于大对象，复制开销比较大</li>
 </ul>
-<img src="/lulalula/.io//copying-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="复制算法" style="zoom: 67%;">
+<img src="/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/copying-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="复制算法" style="zoom: 67%;">
 
 <ul>
 <li>标记-整理算法：标记过程一样，但是不是标记完就清除，而是先将所有的存活对象移到同一端，然后直接清除掉存活对象边界以外的所有区域      <strong>存在的问题：</strong>效率仍比较低，适合老年代这种回收频率低的场景</li>
 </ul>
-<img src="/lulalula/.io//mark-and-compact-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-整理算法" style="zoom:67%;">
+<img src="/lulalula/lulalula/2023/11/09/%E5%85%AB%E8%82%A1%E9%A2%98%E7%9B%AE/mark-and-compact-garbage-collection-algorithm.png" srcset="/lulalula/img/loading.gif" lazyload alt="标记-整理算法" style="zoom:67%;">
 
 <ul>
 <li>分代收集算法：根据对象存活周期的不同将内存分为几块。一般将堆分为新生代和老年代，然后根据不同的年代特点选择合适的垃圾收集算法。  比如新生代每次收集都有大量对象死去，那么就采用 标记-复制算法，这样每次只需要复制很少数量的对象，成本比较低。而对于老年代这种存活几率比较高同时回收频率低的，就采用 标记-清除算法或者标记-整理算法。</li>
