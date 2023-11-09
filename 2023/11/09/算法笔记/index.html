@@ -16,14 +16,14 @@
   <meta name="author" content="Lpx">
   <meta name="keywords" content="">
   
-    <meta name="description" content="算法笔记（LeetCode）算法知识：1、回溯算法：（递归实现）回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。 它是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回到上一步，重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。 回溯算法在包含所有解的解">
+    <meta name="description" content="算法笔记（LeetCode） 算法知识：1、回溯算法：（递归实现）回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。 它是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回到上一步，重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。 回溯算法在包含所有解的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Yolo">
 <meta property="og:url" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Yolo">
-<meta property="og:description" content="算法笔记（LeetCode）算法知识：1、回溯算法：（递归实现）回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。 它是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回到上一步，重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。 回溯算法在包含所有解的解">
+<meta property="og:description" content="算法笔记（LeetCode） 算法知识：1、回溯算法：（递归实现）回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。 它是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回到上一步，重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。 回溯算法在包含所有解的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp">
+<meta property="og:image" content="http://yolo-img.oss-cn-beijing.aliyuncs.com/img/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp">
 <meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0MDEzNjI5,size_16,color_FFFFFF,t_70.png">
 <meta property="og:image" content="https://yolo09110.github.io/lulalula/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/image-20230420135137788.png">
 <meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/image-20230421103030482.png">
@@ -45,10 +45,10 @@
 <meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/image-20230505174059190.png">
 <meta property="og:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/image-20230508112035813.png">
 <meta property="article:published_time" content="2023-11-09T02:59:33.364Z">
-<meta property="article:modified_time" content="2023-10-08T03:48:58.788Z">
+<meta property="article:modified_time" content="2023-11-09T09:17:30.797Z">
 <meta property="article:author" content="Lpx">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://yolo09110.github.io/lulalula/2023/11/09/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp">
+<meta name="twitter:image" content="http://yolo-img.oss-cn-beijing.aliyuncs.com/img/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp">
   
   
   
@@ -331,10 +331,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="算法笔记（LeetCode）"><a href="#算法笔记（LeetCode）" class="headerlink" title="算法笔记（LeetCode）"></a>算法笔记（LeetCode）</h1><h2 id="算法知识："><a href="#算法知识：" class="headerlink" title="算法知识："></a>算法知识：</h2><h3 id="1、回溯算法：（递归实现）"><a href="#1、回溯算法：（递归实现）" class="headerlink" title="1、回溯算法：（递归实现）"></a>1、回溯算法：（递归实现）</h3><p>回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。</p>
+                <p>算法笔记（LeetCode）</p>
+<h2 id="算法知识："><a href="#算法知识：" class="headerlink" title="算法知识："></a>算法知识：</h2><h3 id="1、回溯算法：（递归实现）"><a href="#1、回溯算法：（递归实现）" class="headerlink" title="1、回溯算法：（递归实现）"></a>1、回溯算法：（递归实现）</h3><p>回溯算法是穷举的一种改进，回溯算法依然会列举所有可能的结果（没有剪枝函数的情况下）。</p>
 <p>它是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回到上一步，重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。</p>
 <p>回溯算法在包含所有解的解空间树中，采取深度优先的策略，从根节点出发。</p>
-<p>剪枝函数：<img src="%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0.assets/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp" srcset="/lulalula/img/loading.gif" lazyload alt="img" style="zoom:50%;" /></p>
+<p>剪枝函数：<img src="http://yolo-img.oss-cn-beijing.aliyuncs.com/img/v2-368ff92d458bc2e3ae6eed63d550d75e_1440w.webp" srcset="/lulalula/img/loading.gif" lazyload alt="v2-368ff92d458bc2e3ae6eed63d550d75e_1440w"></p>
 <p>简单来说，某个节点出现后已经不满足要求，那这个节点和后续的所有子节点都没有必要再探索，此时需要“剪掉”该枝</p>
 <h3 id="2、链表和栈"><a href="#2、链表和栈" class="headerlink" title="2、链表和栈"></a>2、链表和栈</h3><p>链表：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ListNode</span> &#123;<br>    <span class="hljs-type">int</span> val;<br>    ListNode next;<br>    <br>    ListNode() &#123;&#125;<br><br>    ListNode(<span class="hljs-type">int</span> val) &#123; <span class="hljs-built_in">this</span>.val = val; &#125;<br><br>    ListNode(<span class="hljs-type">int</span> val, ListNode next) &#123; <span class="hljs-built_in">this</span>.val = val; <span class="hljs-built_in">this</span>.next = next; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
