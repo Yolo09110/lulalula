@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Lpx">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Redis在内存中怎样存储存储数据RedisDB 代表 Redis 的数据库结构，如下 123456789101112131415161718typedef struct redisDb &amp;#123;    dict *dict;    &#x2F;* The keyspace for this DB *&#x2F;    dict *expires;    &#x2F;*Timeout of keys with a ti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis-如何运作">
+<meta property="og:url" content="https://www.yolo09110.icu/Redis/Redis-%E5%A6%82%E4%BD%95%E8%BF%90%E4%BD%9C.html">
+<meta property="og:site_name" content="Yolo">
+<meta property="og:description" content="一、Redis在内存中怎样存储存储数据RedisDB 代表 Redis 的数据库结构，如下 123456789101112131415161718typedef struct redisDb &amp;#123;    dict *dict;    &#x2F;* The keyspace for this DB *&#x2F;    dict *expires;    &#x2F;*Timeout of keys with a ti">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-09T03:35:19.000Z">
+<meta property="article:modified_time" content="2023-12-09T04:01:16.183Z">
+<meta property="article:author" content="Lpx">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Redis-如何运作 - Yolo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yolo09110.icu","root":"/","version":"1.9.5","typing":{"enable":false,"typeSpeed":70,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"leancloud":{"app_id":"CdrmGVSpBdC5RxmCwvpa4qZB-gzGzoHsz","app_key":"7s5o0uXg54vyI98408Q967HX","server_url":"https://cdrmgvsp.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yolo</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Redis-如何运作</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-09 11:35" pubdate>
+          2023年12月9日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Redis-如何运作</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、Redis在内存中怎样存储"><a href="#一、Redis在内存中怎样存储" class="headerlink" title="一、Redis在内存中怎样存储"></a>一、Redis在内存中怎样存储</h2><h3 id="存储数据"><a href="#存储数据" class="headerlink" title="存储数据"></a>存储数据</h3><p>RedisDB 代表 Redis 的数据库结构，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Java">typedef struct redisDb &#123;<br>    dict *dict;<br>    <span class="hljs-comment">/* The keyspace for this DB */</span><br>    dict *expires;<br>    <span class="hljs-comment">/*Timeout of keys with a timeout set */</span><br>    dict *blocking_keys;<br>    <span class="hljs-comment">/* Keys with clients waiting for data (BLPOP)*/</span><br>    dict *ready_keys;<br>    <span class="hljs-comment">/* BLocked keys that received a PUSH */</span><br>    dict *watched_keys;<br>    <span class="hljs-comment">/*WATCHED keys for MULTI/EXEC CAS*/</span><br>    <span class="hljs-type">int</span> id;<br>    <span class="hljs-comment">/* Database ID */</span><br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> avg_ttl;<br>    <span class="hljs-comment">/* Average TTL, just for stats */</span><br>    list *defrag_later;<br>    <span class="hljs-comment">/* List of key names to attempt to defrag one by one, gradually */</span><br>&#125;redisDb;<br></code></pre></td></tr></table></figure>
+
+<p>dict：字典，存储实际的数据；跟 hashtable 渐进式扩容中的字典是一样的</p>
+<p>expires：过期字典，存放设定了过期时间的 key 以及过期时的时间戳</p>
+<p>dict 的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Java">typedef struct dict &#123;<br>    dictType *type;<br>    <span class="hljs-keyword">void</span> *privdata;<br>    dictht ht[<span class="hljs-number">2</span>];<br>    <span class="hljs-type">long</span> rehashidx;<span class="hljs-comment">/*rehashing not in progress if rehashidx==-1*/</span><br>    unsigned <span class="hljs-type">long</span> iterators;<span class="hljs-comment">/* number of iterators currently running */</span><br>&#125; dict;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="过期键"><a href="#过期键" class="headerlink" title="过期键"></a>过期键</h3><p>过期键实际是存储在 expires 字典上</p>
+<p>value 为key过期时间的时间戳</p>
+<p>注意，不管是 dict 还是 expires 字典，存储的 key 都不是真正的 key 字符串，而是指向key字符串的指针；  也就是说，在内存中有一块区域存储 key 字符串，dict 的 key 和 expires 的key 都指向它 </p>
+<h2 id="二、Redis-是单线程还是多线程"><a href="#二、Redis-是单线程还是多线程" class="headerlink" title="二、Redis 是单线程还是多线程"></a>二、Redis 是单线程还是多线程</h2><p><strong>Redis 的核心处理逻辑是单线程</strong>；辅助模块会有多线程、多进程等，比如复制模块用的多线程、UNLINK 等非阻塞的删除使用的多线程、网络 I&#x2F;O 解包从 6.0 开始是多线程；</p>
+<p>注意，Redis 单线程指的是 接收到请求 -&gt; 解析请求 -&gt; 具体操作 -&gt; 响应回包  这一串是单线程，无法被打断；比如说 set k1 v1 ，这个操作就是原子性的，不能被打断，只能单线程执行；</p>
+<p>但是 set k1 v1;   expire k1 10 这两条合在一块就不是原子性了</p>
+<h3 id="1、为什么选择单线程"><a href="#1、为什么选择单线程" class="headerlink" title="1、为什么选择单线程"></a>1、为什么选择单线程</h3><p>Redis 的定位是内存 K-V 存储，一般用来存储短平快的热点数据，本身执行就很快，不应该成为瓶颈；瓶颈应该在网络 I&#x2F;O 上；使用多线程并不会带来太大的收益</p>
+<p>而且 Redis 的设计初衷就是简单、可维护，如果使用多线程，则增加了极大的复杂性</p>
+<h4 id="（1）多线程引入极大的复杂性"><a href="#（1）多线程引入极大的复杂性" class="headerlink" title="（1）多线程引入极大的复杂性"></a>（1）多线程引入极大的复杂性</h4><ul>
+<li>首先，如果引入多线程，Redis 的单线程执行的原子性、隔离性就不复存在了；需要为了执行流程的确而增加大量额外的工作，比如加锁、解锁等等</li>
+<li>而且，Redis 的底层存储结构设计的非常好，做了极大的优化；如果使用多线程，由于线程不安全，这些数据结构就需要重新设计改造</li>
+<li>再者，多线程使得编程、操作等变得复杂，调试也难度更高，更容易出错</li>
+</ul>
+<h4 id="（2）多线程带来较大的开销"><a href="#（2）多线程带来较大的开销" class="headerlink" title="（2）多线程带来较大的开销"></a>（2）多线程带来较大的开销</h4><ul>
+<li>多线程下，线程的上下文切换消耗资源</li>
+<li>为了同步，需要加锁、解锁等操作，也有较大开销</li>
+<li>线程本身就需要占用空间，Redis 由于在内存中，对空间的消耗非常敏感</li>
+</ul>
+<h2 id="三、Redis-单线程为什么这么快"><a href="#三、Redis-单线程为什么这么快" class="headerlink" title="三、Redis 单线程为什么这么快"></a>三、Redis 单线程为什么这么快</h2><ul>
+<li>Redis 的数据存储结构设计的很好，并且每种数据类型都有多种编码方式供不同场景使用</li>
+<li>Redis 在内存中，内存中的操作本身就很快</li>
+<li>Redis 使用了 I&#x2F;O 多路复用机制，使其能在网络 I&#x2F;O 请求中，并发的处理请求</li>
+</ul>
+<h3 id="1、I-O-多路复用机制："><a href="#1、I-O-多路复用机制：" class="headerlink" title="1、I&#x2F;O 多路复用机制："></a>1、I&#x2F;O 多路复用机制：</h3><p>Redis 在启动时，已经绑定了端口，监听连接；Redis 的整个处理流程是：</p>
+<ul>
+<li>客户端请求到来，调用 accept 建立连接</li>
+<li>调用 recv 从套接字中获取客户端发来的请求 </li>
+<li>解析请求，获取请求参数</li>
+<li>执行核心处理逻辑获取请求结果</li>
+<li>调用 send 发送结果</li>
+</ul>
+<p>默认情况下，套接字是阻塞模式的，阻塞发生在两个地方，accept 和 recv；</p>
+<p>比如说 accept 建立连接时间过长，会导致 accept 阻塞；或者客户端迟迟不发请求，导致 recv 操作发生阻塞；而一旦发生阻塞，Redis 就被迫停止其他服务了；</p>
+<p>针对这个问题，Redis 将 accpet 和 recv 操作设置为非阻塞，也就说，如果这两个操作没有响应，就去执行其他任务； 那么，此时就需要一种方式，来监控 accept、recv 这些操作后来是否就绪；</p>
+<p>常见的方式就是轮询，显然十分低效；好消息是，操作系统实现了 I&#x2F;O 多路复用机制；简单来说，就是如果 I&#x2F;O 操作触发，就会产生通知，收到通知，再去处理通知对应的具体事件</p>
+<p>Redis 对 I&#x2F;O 多路复用做了一层封装，称为 Reactor 模型；本质就是监听各种事件（事件是由epoll产生的），当事件发生时，将事件分发给不同的处理器</p>
+<p>这样就不会阻塞在某一个操作上，I&#x2F;O 多路复用让 Redis 单线程下也有了较大的并发度</p>
+<h2 id="四、多线程是怎么回事"><a href="#四、多线程是怎么回事" class="headerlink" title="四、多线程是怎么回事"></a>四、多线程是怎么回事</h2><p>注意的点：多线程体现在读命令和数据、进行解析、以及回包，也就是将缓冲区的结果通过 socket 发送给客户端； 也就是说，数据准备好了之后，内核通知应用程序，主线程才转去处理，将这些连接分发给 I&#x2F;O 多线程</p>
+<p>I&#x2F;O 线程要么全在读，要么全在写；因为主线程在分发等待读任务时，是阻塞的，直到所有的 I&#x2F;O 线程处理完读；   写任务也是一样；     **** 主线程在分发任务时，也会给自己分发一份，然后阻塞等待所有的任务都被完成；</p>
+<blockquote>
+<p>Redis 初始化时，会根据配置文件设定的参数创建I&#x2F;O 线程，创建成功后就进行了循环，一直执行，直到Redis 进程关闭；</p>
+</blockquote>
+<h2 id="五、内存满了怎么办"><a href="#五、内存满了怎么办" class="headerlink" title="五、内存满了怎么办"></a>五、内存满了怎么办</h2><p>在 32 位机器上，总内存只有 4G，系统本身就需要一些资源，所以 Redis 的最大内存是 3G；</p>
+<p>而在 64 位机器上，不限制内存的使用；但是也可以通过 maxmemory 来配置</p>
+<p>如果 Redis 的内存占用达到了上限，那么就有这么8种处理策略</p>
+<ol>
+<li>noeviction（默认）：满了之后不做处理，添加新数据失败</li>
+<li>针对设置了过期时间的键：</li>
+</ol>
+<p>LRU：（Least Rencently Used）最近最少使用的进行淘汰，腾出空间给新数据用</p>
+<p>LFU：（Least Frequently Used）最近最不频繁使用的进行淘汰</p>
+<p>Random：随机淘汰</p>
+<p>TTL：离过期时间最近的进行淘汰</p>
+<ol>
+<li>针对所有的键：</li>
+</ol>
+<p>LRU：（Least Rencently Used）最近最少使用的进行淘汰，腾出空间给新数据用</p>
+<p>LFU：（Least Frequently Used）最近最不频繁使用的进行淘汰</p>
+<p>Random：随机淘汰</p>
+<h3 id="1、淘汰策略选择"><a href="#1、淘汰策略选择" class="headerlink" title="1、淘汰策略选择"></a>1、淘汰策略选择</h3><p>针对不同的场景选用不同的淘汰策略：</p>
+<p>比如数据都很重要的场景，就需要 noeviction 策略； 比如使用缓存的场景，就会使用 LRU&#x2F; LFU</p>
+<h3 id="2、淘汰时机"><a href="#2、淘汰时机" class="headerlink" title="2、淘汰时机"></a>2、淘汰时机</h3><p>实际上，每次运行读写命令的时候，都会调用processCommand函数，processCommand中又会调用freeMemoryIfNeeded,这时候就会尝试去释放一定内存，策略就按我们上述配置的策略。</p>
+<p>注意，淘汰的是 key，对应的value 可能很大，所以淘汰一个可能就会腾出比较大的空间</p>
+<h2 id="六、LRU"><a href="#六、LRU" class="headerlink" title="六、LRU"></a>六、LRU</h2><blockquote>
+<p> 只考虑最新版本的</p>
+</blockquote>
+<p>Redis 使用的 LRU 与 正经的 LRU 有区别，它使用的是近似 LRU</p>
+<blockquote>
+<p>因为如果要是所有元素比较，就需要为所有元素维护一个排序的列表，也就是一个双向链表，这样的开销太大，Redis 是内存节约型</p>
+</blockquote>
+<p>首先，并不是在所有的元素中找最近未使用的，也就是活性最低的；而是每次随机取样 5 个（取样有两种选择，使用的淘汰策略是从expires中淘汰则是在设置了过期时间的 </p>
+<p>key 中取样，另一种策略则是在所有的key中取样），在这五个里面选，同时，Redis 还引入了淘汰池进行优化；具体步骤如下：</p>
+<ul>
+<li>先从所有存储对象中随机选取 5 个，加入淘汰池；将活性最低的淘汰掉；</li>
+<li>之后每次选取 5 个，将其中活性小于淘汰池中最低活性的加入到淘汰池；淘汰池大小为16，如果淘汰池满了，则将活性最大的那个移除出去（移除不是淘汰）</li>
+<li>淘汰淘汰池中活性最小的那个</li>
+</ul>
+<p>LRU 使用的是 RedisObject 中的 lru 字段，共 24 位</p>
+<p>为了节省CPU资源，lru字段每 100 ms 才会更新一下</p>
+<p>取样的个数为 n，默认这个n是5；但是 n 为10 时采样的效果最好，最接近原始 LRU 的结果；但是 10 个的话更消耗 CPU</p>
+<h2 id="七、LFU"><a href="#七、LFU" class="headerlink" title="七、LFU"></a>七、LFU</h2><h3 id="1、为什么有了-LRU-还引入-LFU"><a href="#1、为什么有了-LRU-还引入-LFU" class="headerlink" title="1、为什么有了 LRU 还引入 LFU"></a>1、为什么有了 LRU 还引入 LFU</h3><p>因为 LRU 脱离频率，只考虑访问时间；如果有一个对象，之前频繁的访问，快要进行淘汰的时候，另一个几乎没用过的对象被访问了，那么按照 LRU， 频繁访问的这个对象就会被淘汰；这样显然是不好的</p>
+<h3 id="2、LFU"><a href="#2、LFU" class="headerlink" title="2、LFU"></a>2、LFU</h3><p>Redis 使用的 LFU 也是改造过的</p>
+<p>因为 LRU 和 LFU 不可能同时使用，因此 lru 字段就可以复用，节省内存；只不过高16位记录上次访问的时间戳，以分为单位；低8位记录访问的次数；</p>
+<p>Redis 使用的特殊的 LFU，访问次数会随着距离上次访问的时间间隔而逐渐衰减，每分钟减一；</p>
+<p>而它的访问次数加一不是肯定加一；当访问次数小于5时，每次访问次数加一，当次数大于5时，则随机加一，也就是说有可能加，有可能不加； 如果确定加，则很容易就加大最大值 255</p>
+<p>对于那些刚添加的数据，将访问次数设置为5，防止刚添加就被淘汰；</p>
+<p>为什么要设计成大于5次就一定概率加一，而不是一定加一：</p>
+<p>1、避免过度关注热点数据，而将那些非热点数据很快淘汰出去；有概率加一就使得非热点数据得以有机会留在内存中，因为有可能会访问到</p>
+<p>2、给不同的数据项提供相对公平的缓存机会</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Redis/" class="category-chain-item">Redis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Redis-如何运作</div>
+      <div>https://www.yolo09110.icu/Redis/Redis-如何运作.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lpx</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Redis/Redis-%E6%8C%81%E4%B9%85%E5%8C%96.html" title="Redis-持久化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis-持久化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Redis/Redis-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html" title="Redis-基本数据类型">
+                        <span class="hidden-mobile">Redis-基本数据类型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"CdrmGVSpBdC5RxmCwvpa4qZB-gzGzoHsz","appKey":"7s5o0uXg54vyI98408Q967HX","path":"window.location.pathname","placeholder":"说点啥子~","avatar":"retro","meta":["nick"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <span>You only live once</span>
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
