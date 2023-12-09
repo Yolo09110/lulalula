@@ -1,0 +1,230 @@
+---
+title: Redis-如何运作
+date: 2023-12-09 11:35:19
+category: Redis
+---
+
+## 一、Redis在内存中怎样存储
+
+### 存储数据
+
+RedisDB 代表 Redis 的数据库结构，如下
+
+```Java
+typedef struct redisDb {
+    dict *dict;
+    /* The keyspace for this DB */
+    dict *expires;
+    /*Timeout of keys with a timeout set */
+    dict *blocking_keys;
+    /* Keys with clients waiting for data (BLPOP)*/
+    dict *ready_keys;
+    /* BLocked keys that received a PUSH */
+    dict *watched_keys;
+    /*WATCHED keys for MULTI/EXEC CAS*/
+    int id;
+    /* Database ID */
+    long long avg_ttl;
+    /* Average TTL, just for stats */
+    list *defrag_later;
+    /* List of key names to attempt to defrag one by one, gradually */
+}redisDb;
+```
+
+dict：字典，存储实际的数据；跟 hashtable 渐进式扩容中的字典是一样的
+
+expires：过期字典，存放设定了过期时间的 key 以及过期时的时间戳
+
+dict 的结构：
+
+```Java
+typedef struct dict {
+    dictType *type;
+    void *privdata;
+    dictht ht[2];
+    long rehashidx;/*rehashing not in progress if rehashidx==-1*/
+    unsigned long iterators;/* number of iterators currently running */
+} dict;
+```
+
+![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
+> HSet 指的是 Hash； 
+
+### 过期键
+
+过期键实际是存储在 expires 字典上
+
+value 为key过期时间的时间戳
+
+![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
+  
+
+注意，不管是 dict 还是 expires 字典，存储的 key 都不是真正的 key 字符串，而是指向key字符串的指针；  也就是说，在内存中有一块区域存储 key 字符串，dict 的 key 和 expires 的key 都指向它 
+
+
+
+## 二、Redis 是单线程还是多线程
+
+**Redis 的核心处理逻辑是单线程**；辅助模块会有多线程、多进程等，比如复制模块用的多线程、UNLINK 等非阻塞的删除使用的多线程、网络 I/O 解包从 6.0 开始是多线程；
+
+注意，Redis 单线程指的是 接收到请求 -> 解析请求 -> 具体操作 -> 响应回包  这一串是单线程，无法被打断；比如说 set k1 v1 ，这个操作就是原子性的，不能被打断，只能单线程执行；
+
+但是 set k1 v1;   expire k1 10 这两条合在一块就不是原子性了
+
+### 1、为什么选择单线程
+
+Redis 的定位是内存 K-V 存储，一般用来存储短平快的热点数据，本身执行就很快，不应该成为瓶颈；瓶颈应该在网络 I/O 上；使用多线程并不会带来太大的收益
+
+而且 Redis 的设计初衷就是简单、可维护，如果使用多线程，则增加了极大的复杂性
+
+#### （1）多线程引入极大的复杂性
+
+- 首先，如果引入多线程，Redis 的单线程执行的原子性、隔离性就不复存在了；需要为了执行流程的确而增加大量额外的工作，比如加锁、解锁等等
+- 而且，Redis 的底层存储结构设计的非常好，做了极大的优化；如果使用多线程，由于线程不安全，这些数据结构就需要重新设计改造
+- 再者，多线程使得编程、操作等变得复杂，调试也难度更高，更容易出错
+
+#### （2）多线程带来较大的开销
+
+- 多线程下，线程的上下文切换消耗资源
+- 为了同步，需要加锁、解锁等操作，也有较大开销
+- 线程本身就需要占用空间，Redis 由于在内存中，对空间的消耗非常敏感
+
+## 三、Redis 单线程为什么这么快
+
+- Redis 的数据存储结构设计的很好，并且每种数据类型都有多种编码方式供不同场景使用
+- Redis 在内存中，内存中的操作本身就很快
+- Redis 使用了 I/O 多路复用机制，使其能在网络 I/O 请求中，并发的处理请求
+
+### 1、I/O 多路复用机制：
+
+Redis 在启动时，已经绑定了端口，监听连接；Redis 的整个处理流程是：
+
+- 客户端请求到来，调用 accept 建立连接
+- 调用 recv 从套接字中获取客户端发来的请求 
+- 解析请求，获取请求参数
+- 执行核心处理逻辑获取请求结果
+- 调用 send 发送结果
+
+![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
+默认情况下，套接字是阻塞模式的，阻塞发生在两个地方，accept 和 recv；
+
+比如说 accept 建立连接时间过长，会导致 accept 阻塞；或者客户端迟迟不发请求，导致 recv 操作发生阻塞；而一旦发生阻塞，Redis 就被迫停止其他服务了；
+
+针对这个问题，Redis 将 accpet 和 recv 操作设置为非阻塞，也就说，如果这两个操作没有响应，就去执行其他任务； 那么，此时就需要一种方式，来监控 accept、recv 这些操作后来是否就绪；
+
+常见的方式就是轮询，显然十分低效；好消息是，操作系统实现了 I/O 多路复用机制；简单来说，就是如果 I/O 操作触发，就会产生通知，收到通知，再去处理通知对应的具体事件
+
+Redis 对 I/O 多路复用做了一层封装，称为 Reactor 模型；本质就是监听各种事件（事件是由epoll产生的），当事件发生时，将事件分发给不同的处理器
+
+![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
+这样就不会阻塞在某一个操作上，I/O 多路复用让 Redis 单线程下也有了较大的并发度
+
+
+
+
+
+## 四、多线程是怎么回事
+
+![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
+注意的点：多线程体现在读命令和数据、进行解析、以及回包，也就是将缓冲区的结果通过 socket 发送给客户端； 也就是说，数据准备好了之后，内核通知应用程序，主线程才转去处理，将这些连接分发给 I/O 多线程
+
+I/O 线程要么全在读，要么全在写；因为主线程在分发等待读任务时，是阻塞的，直到所有的 I/O 线程处理完读；   写任务也是一样；     **** 主线程在分发任务时，也会给自己分发一份，然后阻塞等待所有的任务都被完成；
+
+> Redis 初始化时，会根据配置文件设定的参数创建I/O 线程，创建成功后就进行了循环，一直执行，直到Redis 进程关闭；
+
+
+
+## 五、内存满了怎么办
+
+在 32 位机器上，总内存只有 4G，系统本身就需要一些资源，所以 Redis 的最大内存是 3G；
+
+而在 64 位机器上，不限制内存的使用；但是也可以通过 maxmemory 来配置
+
+如果 Redis 的内存占用达到了上限，那么就有这么8种处理策略
+
+1. noeviction（默认）：满了之后不做处理，添加新数据失败
+2. 针对设置了过期时间的键：
+
+LRU：（Least Rencently Used）最近最少使用的进行淘汰，腾出空间给新数据用
+
+LFU：（Least Frequently Used）最近最不频繁使用的进行淘汰
+
+Random：随机淘汰
+
+TTL：离过期时间最近的进行淘汰
+
+1. 针对所有的键：
+
+LRU：（Least Rencently Used）最近最少使用的进行淘汰，腾出空间给新数据用
+
+LFU：（Least Frequently Used）最近最不频繁使用的进行淘汰
+
+Random：随机淘汰
+
+### 1、淘汰策略选择
+
+针对不同的场景选用不同的淘汰策略：
+
+比如数据都很重要的场景，就需要 noeviction 策略； 比如使用缓存的场景，就会使用 LRU/ LFU
+
+### 2、淘汰时机
+
+实际上，每次运行读写命令的时候，都会调用processCommand函数，processCommand中又会调用freeMemoryIfNeeded,这时候就会尝试去释放一定内存，策略就按我们上述配置的策略。
+
+注意，淘汰的是 key，对应的value 可能很大，所以淘汰一个可能就会腾出比较大的空间
+
+
+
+## 六、LRU
+
+>  只考虑最新版本的
+
+Redis 使用的 LRU 与 正经的 LRU 有区别，它使用的是近似 LRU
+
+> 因为如果要是所有元素比较，就需要为所有元素维护一个排序的列表，也就是一个双向链表，这样的开销太大，Redis 是内存节约型
+
+首先，并不是在所有的元素中找最近未使用的，也就是活性最低的；而是每次随机取样 5 个（取样有两种选择，使用的淘汰策略是从expires中淘汰则是在设置了过期时间的 
+
+key 中取样，另一种策略则是在所有的key中取样），在这五个里面选，同时，Redis 还引入了淘汰池进行优化；具体步骤如下：
+
+- 先从所有存储对象中随机选取 5 个，加入淘汰池；将活性最低的淘汰掉；
+- 之后每次选取 5 个，将其中活性小于淘汰池中最低活性的加入到淘汰池；淘汰池大小为16，如果淘汰池满了，则将活性最大的那个移除出去（移除不是淘汰）
+- 淘汰淘汰池中活性最小的那个
+
+LRU 使用的是 RedisObject 中的 lru 字段，共 24 位
+
+为了节省CPU资源，lru字段每 100 ms 才会更新一下
+
+取样的个数为 n，默认这个n是5；但是 n 为10 时采样的效果最好，最接近原始 LRU 的结果；但是 10 个的话更消耗 CPU
+
+
+
+## 七、LFU
+
+### 1、为什么有了 LRU 还引入 LFU
+
+因为 LRU 脱离频率，只考虑访问时间；如果有一个对象，之前频繁的访问，快要进行淘汰的时候，另一个几乎没用过的对象被访问了，那么按照 LRU， 频繁访问的这个对象就会被淘汰；这样显然是不好的
+
+### 2、LFU
+
+Redis 使用的 LFU 也是改造过的
+
+因为 LRU 和 LFU 不可能同时使用，因此 lru 字段就可以复用，节省内存；只不过高16位记录上次访问的时间戳，以分为单位；低8位记录访问的次数；
+
+Redis 使用的特殊的 LFU，访问次数会随着距离上次访问的时间间隔而逐渐衰减，每分钟减一；
+
+而它的访问次数加一不是肯定加一；当访问次数小于5时，每次访问次数加一，当次数大于5时，则随机加一，也就是说有可能加，有可能不加； 如果确定加，则很容易就加大最大值 255
+
+对于那些刚添加的数据，将访问次数设置为5，防止刚添加就被淘汰；
+
+为什么要设计成大于5次就一定概率加一，而不是一定加一：
+
+1、避免过度关注热点数据，而将那些非热点数据很快淘汰出去；有概率加一就使得非热点数据得以有机会留在内存中，因为有可能会访问到
+
+2、给不同的数据项提供相对公平的缓存机会
+
