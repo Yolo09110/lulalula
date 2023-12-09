@@ -47,17 +47,13 @@ typedef struct dict {
 } dict;
 ```
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
 
-> HSet 指的是 Hash； 
 
 ### 过期键
 
 过期键实际是存储在 expires 字典上
 
 value 为key过期时间的时间戳
-
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
 
   
 
@@ -107,7 +103,7 @@ Redis 在启动时，已经绑定了端口，监听连接；Redis 的整个处�
 - 执行核心处理逻辑获取请求结果
 - 调用 send 发送结果
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 默认情况下，套接字是阻塞模式的，阻塞发生在两个地方，accept 和 recv；
 
@@ -119,7 +115,7 @@ Redis 在启动时，已经绑定了端口，监听连接；Redis 的整个处�
 
 Redis 对 I/O 多路复用做了一层封装，称为 Reactor 模型；本质就是监听各种事件（事件是由epoll产生的），当事件发生时，将事件分发给不同的处理器
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 这样就不会阻塞在某一个操作上，I/O 多路复用让 Redis 单线程下也有了较大的并发度
 
@@ -129,7 +125,7 @@ Redis 对 I/O 多路复用做了一层封装，称为 Reactor 模型；本质就
 
 ## 四、多线程是怎么回事
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 注意的点：多线程体现在读命令和数据、进行解析、以及回包，也就是将缓冲区的结果通过 socket 发送给客户端； 也就是说，数据准备好了之后，内核通知应用程序，主线程才转去处理，将这些连接分发给 I/O 多线程
 

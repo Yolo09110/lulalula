@@ -83,7 +83,7 @@ dir ******
 
 最终生成的RDB文件是一堆乱码，因为是二进制格式；但是最开头会有 REDIS 这个字符串标识
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 ### 3、什么时候持久化
 
@@ -143,7 +143,7 @@ AOF 的写入流程为：
 2. Appendfsync everysec: 每秒刷一次盘
 3. Appendfsync no：不主动刷盘，让操作系统刷，Linux 一般是 30 s
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 Redis 推荐的刷盘策略是 everysec，每1s刷一次盘，性能也不会影响太多，丢失最多1s 的数据；
 
@@ -171,7 +171,7 @@ Everysec 是后台线程异步刷盘
 
 这一步就跟设置的刷盘策略紧密相关；调用系统的 flush 函数
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 ### 4、AOF重写
 
@@ -185,9 +185,7 @@ AOF文件是不断写入的，这就导致一个问题：AOF 文件会不断膨�
 
 > 重写的原理，比如执行了 set a 1，然后后来又执行了 set a 2，那么前一条已经没有意义了
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
 
-> 这个图左侧的红页稍微有点问题，没有 set b 3
 
 1、为什么不直接复用原来的 AOF 文件？
 
@@ -205,7 +203,7 @@ AOF文件是不断写入的，这就导致一个问题：AOF 文件会不断膨�
 
 混合持久化是指，在 AOF 重写时，将当前数据库状态通过 rdb 二进制快照保存下来，然后将重写期间的写操作命令以 AOF 文件的格式追加到 rdb 二进制后面
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 ### 2、为什么要混合持久化
 

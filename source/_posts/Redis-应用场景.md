@@ -146,7 +146,7 @@ A线程加了锁，结果阻塞了，锁过期自动解锁了；此时B线程获
 
 Redis 引入 lua 脚本刚好解决这一问题，lua 脚本保证其中的操作是原子化的；
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 这下，分布式锁的特性前三个就满足了，互斥性、安全性、对称性
 
@@ -214,7 +214,7 @@ RedLock 已经解决了这个问题，在申请成功后，锁剩余的持有时
 
 一个线程A申请到了锁，已经持有了，但是由于系统之类的问题（比如 JVM 的 GC），线程A暂停了；  此时锁过期了，另一个线程B申请到了锁；等线程A返回回来的时候，它并不知道自己的锁已经过期了； 那么就会出现多个线程持有同一把锁的情况
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 #### （3）Clock Drift
 
@@ -345,7 +345,7 @@ Redis 支持发布订阅模式
 
 > 需要消费者先订阅，不然订阅之前生产的消息生产失败
 
-![img](http://yolo-img.oss-cn-beijing.aliyuncs.com/img/asynccode)
+
 
 缺点：没有 ACK，消费失败后消息也放不回；        没有持久化，系统宕机消息就丢失了
 
